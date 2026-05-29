@@ -84,4 +84,13 @@ npm run ios
 
 ### 4. How Calorie Calculations Work
 
-The tracking module processes movement updates roughly every 2 seconds and maps incoming velocity changes to exercise physics:$$\text{Calories Burned per Minute} = \frac{\text{MET} \times 3.5 \times \text{Weight in kg}}{200}$$Where the active MET coefficients dynamically shift matching structural thresholds:Stationary/Stopped: $0.0 \text{ MET}$Walking (< 5.4 km/h): $3.5 \text{ MET}$Jogging (< 8.0 km/h): $6.0 \text{ MET}$Running (≥ 8.0 km/h): $10.5 \text{ MET}$
+The tracking module processes movement updates roughly every 2 seconds and maps incoming velocity changes to exercise physics using the standard MET formula:
+
+$$\text{Calories Burned per Minute} = \frac{\text{MET} \times 3.5 \times \text{Weight in kg}}{200}$$
+
+The active MET coefficients dynamically shift based on the user's current speed threshold:
+
+- **Stationary / Stopped:** 0.0 MET (< 1.5 km/h)
+- **Walking:** 3.5 MET (1.5 km/h to 5.3 km/h)
+- **Jogging:** 6.0 MET (5.4 km/h to 7.9 km/h)
+- **Running:** 10.5 MET (≥ 8.0 km/h)
