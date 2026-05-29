@@ -1,97 +1,87 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# Live Workout Calorie Tracker 🏃🔥
 
-# Getting Started
+A high-fidelity, premium real-time fitness tracking application built with **React Native CLI** and **TypeScript**. This app utilizes native device hardware sensors and high-accuracy background geolocation to dynamically calculate physical activity metrics and metabolic calorie expenditure on the fly.
 
-> **Note**: Make sure you have completed the [Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment) guide before proceeding.
+---
 
-## Step 1: Start Metro
+## 🚀 Key Features
 
-First, you will need to run **Metro**, the JavaScript build tool for React Native.
+- **Real-Time MET Calculation:** Maps precise GPS movement speeds directly to Metabolic Equivalent of Task (MET) equations to accurately calculate real-time calorie burn windows.
+- **Persistent Background Processing:** Integrated native foreground services to ensure data calculations and workout states continue processing seamlessly even when the user locks their screen or places their phone in their pocket.
+- **Premium Dashboard UI:** A highly responsive, custom-layered dark mode user interface featuring instrument style gauges for speed/duration tracking and embedded weekly visual progress charts.
+- **Immediate Permission Pipeline:** A sequenced lifecycle routine designed to cleanly request device foreground and background fine location requirements simultaneously upon application launch.
 
-To start the Metro dev server, run the following command from the root of your React Native project:
+---
+
+## 🛠️ Tech Stack & Architecture
+
+- **Framework:** React Native CLI (Bare Workflow)
+- **Language:** TypeScript (Strict Type Safety)
+- **Location Processing:** `react-native-geolocation-service`
+- **Background Architecture:** `react-native-background-actions`
+
+---
+
+## 📦 Getting Started
+
+> **Note**: Make sure you have completed the official React Native [Environment Setup](https://reactnative.dev/docs/set-up-your-environment) guide for CLI configurations before proceeding.
+
+### 1. Installation
+
+Clone the repository and install the required dependencies:
 
 ```sh
-# Using npm
-npm start
-
-# OR using Yarn
-yarn start
+git clone [https://github.com/coyot1904/liveWorkOut.git](https://github.com/coyot1904/liveWorkOut.git)
+cd liveWorkOut
+npm install
 ```
 
-## Step 2: Build and run your app
+---
 
-With Metro running, open a new terminal window/pane from the root of your React Native project, and use one of the following commands to build and run your Android or iOS app:
+### 2. Native Setup & Configurations
 
-### Android
+Android Permissions
+Ensure the following lines are configured inside your android/app/src/main/AndroidManifest.xml to allow background location hooks:
 
 ```sh
-# Using npm
-npm run android
+<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+<uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+<uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+<uses-permission android:name="android.permission.FOREGROUND_SERVICE_LOCATION" />
 
-# OR using Yarn
-yarn android
+<application ...>
+    <service android:name="com.asterinet.reactnativebackgroundactions.RNBackgroundActionsTask" />
+</application>
 ```
 
-### iOS
-
-For iOS, remember to install CocoaPods dependencies (this only needs to be run on first clone or after updating native deps).
-
-The first time you create a new project, run the Ruby bundler to install CocoaPods itself:
+iOS Permissions & Pods
+Install the required iOS cocoapods by navigating to the ios directory:
 
 ```sh
+cd ios
 bundle install
-```
-
-Then, and every time you update your native dependencies, run:
-
-```sh
 bundle exec pod install
+cd ..
 ```
 
-For more information, please visit [CocoaPods Getting Started guide](https://guides.cocoapods.org/using/getting-started.html).
+---
+
+### 3. Run the Application
+
+For Android:
 
 ```sh
-# Using npm
-npm run ios
-
-# OR using Yarn
-yarn ios
+npm run android
 ```
 
-If everything is set up correctly, you should see your new app running in the Android Emulator, iOS Simulator, or your connected device.
+For iOS:
 
-This is one way to run your app — you can also build it directly from Android Studio or Xcode.
+```sh
+npm run ios
+```
 
-## Step 3: Modify your app
+---
 
-Now that you have successfully run the app, let's make changes!
+### 4. How Calorie Calculations Work
 
-Open `App.tsx` in your text editor of choice and make some changes. When you save, your app will automatically update and reflect these changes — this is powered by [Fast Refresh](https://reactnative.dev/docs/fast-refresh).
-
-When you want to forcefully reload, for example to reset the state of your app, you can perform a full reload:
-
-- **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Dev Menu**, accessed via <kbd>Ctrl</kbd> + <kbd>M</kbd> (Windows/Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (macOS).
-- **iOS**: Press <kbd>R</kbd> in iOS Simulator.
-
-## Congratulations! :tada:
-
-You've successfully run and modified your React Native App. :partying_face:
-
-### Now what?
-
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [docs](https://reactnative.dev/docs/getting-started).
-
-# Troubleshooting
-
-If you're having issues getting the above steps to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
-
-# Learn More
-
-To learn more about React Native, take a look at the following resources:
-
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+The tracking module processes movement updates roughly every 2 seconds and maps incoming velocity changes to exercise physics:$$\text{Calories Burned per Minute} = \frac{\text{MET} \times 3.5 \times \text{Weight in kg}}{200}$$Where the active MET coefficients dynamically shift matching structural thresholds:Stationary/Stopped: $0.0 \text{ MET}$Walking (< 5.4 km/h): $3.5 \text{ MET}$Jogging (< 8.0 km/h): $6.0 \text{ MET}$Running (≥ 8.0 km/h): $10.5 \text{ MET}$
